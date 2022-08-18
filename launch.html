@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src='dist/fhir-client-v2.js'>
+	</script>https://epic-1.abhishekkini.repl.co
+</head>
+
+<body>
+	<p>Hello, I am the page "launch.html"</p>
+<!-- for Epic
+'client_id': '85007b06-****-****-8565-2acfdd34dfe7',
+  For cerner   
+'client_id': 'fef427bc-****-****-ab5f-a958916f6818'
+  -->
+  <script>
+  FHIR.oauth2.authorize({
+      'client_id': 'fef427bc-****-****-ab5f-a958916f6818',
+       'scope':  'user/Patient.read launch openid profile',
+      'redirect_uri': 'https://epic-1.abhishekkini.repl.co/app.html'
+    });
+</script>
+</body>
+
+</html>
+
+
+
+

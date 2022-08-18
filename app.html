@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<script src='dist/fhir-client-v2.js'></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+  <style>
+    #main{background:lightgray; margin:1em; padding:1em;font-size:2em;}
+  </style>
+</head>
+
+<body>
+
+  <div id="main"></div>
+
+	<script>
+
+		var myApp = {}
+
+    FHIR.oauth2.ready()
+    .then(function(client){ 
+      myApp.smart = client
+      doRequests()
+    })
+
+    async function doRequests(){
+console.log(myApp.smart)
+      var loincs = [ encodeURIComponent("http://loinc.org|4548-4") ] //4548-4 = HgA1C  //4544-3 = hematocrit
+      var obs = await fetch(myApp.smart.state.serverUrl+"/Patient/"+myApp.smart.patient.id,{
+        headers:{  
+          "Accept":"application/json+fhir",
+          "Authorization":"Bearer "+myApp.smart.state.tokenResponse.access_token
+        }
+        }).then(function(data){
+          return data
+      })
+      //test obs
+    console.log(obs)
+      var response = await obs.json()
+
+      console.log(response)
+
+     var toInsert = ""
+
+// //if there is no entry, then there was no test found
+//       if (!response.entry[0]){
+
+//         toInsert += "We could not find you were tested for HgA1C at this provider."
+
+//       }else{
+        toInsert +="The patient resource is <br>"+JSON.stringify(response)
+        
+        // toInsert += "Your HgA1C was tested on "+response.entry[0].resource.effectiveDateTime+"<br/><br/>"
+
+        // toInsert += "Your HgA1C was "+response.entry[0].resource.valueQuantity.value+"<br/><br/>"
+
+        // toInsert += "<a href='https://en.wikipedia.org/wiki/Glycated_hemoglobin'>According to wikipedia</a>, A1c is measured primarily to determine the three-month average blood sugar level and can be used as a diagnostic test for diabetes mellitus.  <5.7%	Normal, 5.7-6.4%	Prediabetes, >6.5%	Diabetes."
+      // }
+
+      $("#main").html(toInsert)
+
+    }
+	</script>
+
+</body>
+
+</html>
