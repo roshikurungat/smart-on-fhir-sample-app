@@ -7,14 +7,104 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
   <style>
-    #main{background:lightgray; margin:1em; padding:1em;font-size:2em;}
+/*     #main{background:lightgray; margin:1em; padding:1em;font-size:2em;} */
+     #label{
+       margin:1em; 
+       padding:1em;
+       display:inline-table;
+     }
+    p{
+       margin:1em; 
+       padding:1em;
+    }
+
+    #box{
+      border:1px solid black;
+    }
+
+    table {
+    font-family: arial, sans-serif;
+    width: 100%;
+  }
+  
+  td, th {
+    text-align: left;
+    padding: 8px;
+      width:25%;
+  }
+  tr{
+    width:100%
+  }
+   
+
+/* tr:nth-child(even) {
+  background-color: #dddddd;
+} */
   </style>
 </head>
 
 <body>
+<h1>Patient Demographics</h1>
+<div id="box">
+  
+<!--   <p id="label">Last Name
+  <p id="lastName"></p>
+  </p>
 
-  <div id="main"></div>
+   <p id="label">First Name
+  <p id="firstName"></p>
+  </p>
 
+   <div id="label">Address
+  <p id="address"></p>
+  </div>
+
+   <div id="label">Email
+  <p id="email"></p>
+  </div>
+ -->
+<table>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Mobile</th>
+   
+  </tr>
+  <tr>
+      <td id="firstName"></td>
+      <td id="lastName"></td>
+      <td id="mobile"></td>
+      
+  </tr>
+  </table>
+  <table>
+    <tr>
+      <th>Language</th>
+      <th>Gender</th>
+      <th>DOB</th>
+    </tr>
+
+    <tr>
+      <td id="language"></td>
+      <td id="gender"></td>
+      <td id="DOB"></td>
+    </tr>
+    
+  </table>
+
+  <table>
+    <tr>
+      <th>Address</th>
+    </tr>
+
+    <tr>
+      <td id="address"></td>
+    </tr>
+    
+  </table>
+</div>
+
+  
 	<script>
 
 		var myApp = {}
@@ -37,20 +127,47 @@ console.log(myApp.smart)
           return data
       })
       //test obs
-    console.log(obs)
+     console.log(obs)
       var response = await obs.json()
 
       console.log(response)
+      console.log(JSON.stringify(response))
+    console.log(JSON.stringify(response.contact[0].address,undefined,4))
+      
+      var firstName = response.name[0].given
+      var lastName = response.name[0].family
+      var language = response.communication[0].language.text
+      var mobile = response.telecom[0].value
+      var gender = response.gender
+      var DOB = response.birthDate
 
-     var toInsert = ""
+       var address = JSON.stringify(response.contact[0].address,undefined,4)
+      
+      $("#lastName").html(lastName)
+      $("#firstName").html(firstName)
+      $("#language").html(language)
+      
+      $("#mobile").html(mobile)
+      $("#gender").html(gender)
+      $("#DOB").html(DOB)
 
-// //if there is no entry, then there was no test found
+      $("#address").html(address)
+    }
+	</script>
+
+</body>
+
+</html>
+
+
+
+<!-- // //if there is no entry, then there was no test found
 //       if (!response.entry[0]){
 
 //         toInsert += "We could not find you were tested for HgA1C at this provider."
 
 //       }else{
-        toInsert +="The patient resource is <br>"+JSON.stringify(response)
+        // toInsert +="The patient resource is <br>"+JSON.stringify(response)
         
         // toInsert += "Your HgA1C was tested on "+response.entry[0].resource.effectiveDateTime+"<br/><br/>"
 
@@ -58,12 +175,4 @@ console.log(myApp.smart)
 
         // toInsert += "<a href='https://en.wikipedia.org/wiki/Glycated_hemoglobin'>According to wikipedia</a>, A1c is measured primarily to determine the three-month average blood sugar level and can be used as a diagnostic test for diabetes mellitus.  <5.7%	Normal, 5.7-6.4%	Prediabetes, >6.5%	Diabetes."
       // }
-
-      $("#main").html(toInsert)
-
-    }
-	</script>
-
-</body>
-
-</html>
+ -->
